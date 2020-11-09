@@ -1,0 +1,15 @@
+{
+    "manifestVersion": 1,
+    "deployments": {
+        "aspNetCoreWeb": [
+            {
+                "name": "zerotouchhr",
+                "parameters": {
+                    "appBundle": ".",
+                    "iisPath": "/",
+                    "iisWebSite": "Default Web Site"
+                }
+            }
+        ]
+    }
+}
