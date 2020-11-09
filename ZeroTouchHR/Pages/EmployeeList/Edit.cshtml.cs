@@ -22,7 +22,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
         public async Task OnGet(int id)
         {
 
-            employee = await _db.employee.FindAsync(id);
+            employee = await _db.Employee.FindAsync(id);
 
 
         }
@@ -33,7 +33,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
             if (ModelState.IsValid)
             {
 
-                var EmpFromDb = await _db.employee.FindAsync(employee.id);
+                var EmpFromDb = await _db.Employee.FindAsync(employee.id);
 
                 EmpFromDb.FName = employee.FName;
                 EmpFromDb.LName = employee.LName;

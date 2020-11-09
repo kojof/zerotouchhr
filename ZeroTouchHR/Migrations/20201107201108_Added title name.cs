@@ -8,7 +8,7 @@ namespace ZeroTouchHR.Migrations
         {
             migrationBuilder.AddColumn<string>(
                 name: "title",
-                table: "employee",
+                table: "Employees",
                 nullable: true);
         }
 
@@ -16,7 +16,7 @@ namespace ZeroTouchHR.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "title",
-                table: "employee");
+                table: "Employees");
         }
     }
 }

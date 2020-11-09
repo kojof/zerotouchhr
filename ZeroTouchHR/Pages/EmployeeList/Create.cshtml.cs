@@ -31,7 +31,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
             if(ModelState.IsValid)
             {
                 
-                await _db.employee.AddAsync(employee);
+                await _db.Employee.AddAsync(employee);
                 await _db.SaveChangesAsync();
                 return RedirectToPage("Index");
             }

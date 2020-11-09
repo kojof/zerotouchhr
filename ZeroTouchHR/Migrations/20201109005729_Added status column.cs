@@ -2,12 +2,12 @@
 
 namespace ZeroTouchHR.Migrations
 {
-    public partial class addphonenumbertoEmployee : Migration
+    public partial class Addedstatuscolumn : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "PhoneNumber",
+                name: "Status",
                 table: "Employees",
                 nullable: true);
         }
@@ -15,7 +15,7 @@ namespace ZeroTouchHR.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PhoneNumber",
+                name: "Status",
                 table: "Employees");
         }
     }

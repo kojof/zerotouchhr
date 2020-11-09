@@ -7,7 +7,7 @@ namespace ZeroTouchHR.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "employee",
+                name: "Employees",
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false)
@@ -24,7 +24,7 @@ namespace ZeroTouchHR.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "employee");
+                name: "Employees");
         }
     }
 }
