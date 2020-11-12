@@ -11,6 +11,6 @@ namespace ZeroTouchHR.Models
 
         }
 
-        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Employee> employee { get; set; }
     }
 }

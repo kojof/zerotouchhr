@@ -66,7 +66,7 @@ namespace ZeroTouchHR.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employee");
                 });
 #pragma warning restore 612, 618
         }
