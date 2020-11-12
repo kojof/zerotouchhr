@@ -2,7 +2,7 @@
 
 namespace ZeroTouchHR.Migrations
 {
-    public partial class newdatabasecreated : Migration
+    public partial class addedtableandattributes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

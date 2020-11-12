@@ -9,12 +9,12 @@
 
 <div class="container row p-0 m-0">
     <div class="col-9">
-        <h2 class=" text-info"> Employee List</h2>
+        <h3 class=" text-info"> Process Started Employees</h3>
 
     </div>
     <div class="col-3">
 
-        <a asp-page="Create" class="btn btn- btn-outline-info form-control " > Add Employee</a>
+        <a asp-page="Create" class="btn btn- btn-outline-info form-control "> Add Employee</a>
 
     </div>
 
@@ -23,7 +23,6 @@
         <form action="/" method="post">
             @if (Model.employees.Count() > 0)
             {
-
                 <table class="table table-striped border">
                     <tr class="table-secondary">
                         <th>
@@ -36,41 +35,49 @@
                             <label asp-for="employees.FirstOrDefault().PhoneNumber"></label>
                         </th>
                         <th>
+                            <label asp-for="employees.FirstOrDefault().Status"></label>
+                        </th>
+                        <th>
                             <label> Action </label>
                         </th>
                     </tr>
 
                     @foreach (var item in Model.employees)
                     {
-                <tr>
+                        <tr>
 
-                    <td>
-                        @Html.DisplayFor(m => item.FName)
+                            <td>
+                                @Html.DisplayFor(m => item.FName)
 
-                    </td>
-
-
-                    <td>
-                        @Html.DisplayFor(m => item.LName)
-
-                    </td>
+                            </td>
 
 
-                    <td>
-                        @Html.DisplayFor(m => item.PhoneNumber)
+                            <td>
+                                @Html.DisplayFor(m => item.LName)
 
-                    </td>
-                    <td>
+                            </td>
 
-                        <button class="btn btn-outline-danger btn-sm ">
-                            Delete
 
-                        </button>
-                        <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
+                            <td>
+                                @Html.DisplayFor(m => item.PhoneNumber)
 
-                    </td>
+                            </td>
 
-                </tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Status)
+
+                            </td>
+                            <td>
+
+                                <button class="btn btn-outline-danger btn-sm ">
+                                    Delete
+
+                                </button>
+                                <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
+
+                            </td>
+
+                        </tr>
 
 
                     }
@@ -83,7 +90,7 @@
             else
             {
 
-                <p>No Employeess at this moment. </p>
+                <p>No employees at this moment. </p>
             }
 
 
@@ -92,5 +99,87 @@
 
     </div>
 
+    <div class="col-9">
+        <h3 class=" text-info"> Process Completed Employee List</h3>
+    </div>
+    <div class="col-12 border p-3 ">
+        <form action="/" method="post">
+            @if (Model.employeesCompleted.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="employeesCompleted.FirstOrDefault().FName"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesCompleted.FirstOrDefault().LName"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesCompleted.FirstOrDefault().PhoneNumber"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesCompleted.FirstOrDefault().Status"></label>
+                        </th>
+                        @*<th>
+                            <label> Action </label>
+                        </th>*@
+                    </tr>
+
+                    @foreach (var item in Model.employeesCompleted)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(m => item.FName)
+
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(m => item.LName)
+
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(m => item.PhoneNumber)
+
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(m => item.Status)
+
+                            </td>
+                            @*<td>
+
+                                <button class="btn btn-outline-danger btn-sm ">
+                                    Delete
+
+                                </button>
+                                <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
+
+                            </td>*@
+
+                        </tr>
+
+
+                    }
+
+
+
+                </table>
+
+            }
+            else
+            {
+
+                <p>No employees at this moment. </p>
+            }
+
+
+        </form>
+
+
+    </div>
 
 </div>

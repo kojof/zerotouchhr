@@ -28,10 +28,10 @@ namespace ZeroTouchHR.Pages.EmployeeList
 
         public async Task<IActionResult> OnPost()
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                
-                await _db.Employee.AddAsync(employee);
+                employee.Status = "Started";
+                await _db.employee.AddAsync(employee);
                 await _db.SaveChangesAsync();
                 return RedirectToPage("Index");
             }
@@ -40,7 +40,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
 
                 return Page();
             }
-            
+
         }
 
         //public async Task<IActionResult> OnPost(Employee employeeObj)
