@@ -10,7 +10,7 @@
 <br />
 
 <div class="border container" style="padding:30px">
-    <form method="post">
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
 
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
@@ -22,24 +22,24 @@
                 <div class="col-md-5">
 
                     <label for="First Name">First Name</label>
-                    <input asp-for="employee.FName" class="form-control" placeholder="Enter First Name" />
-                    <span asp-validation-for="employee.FName" class="text-danger"></span>
+                    <input asp-for="Employee.FName" class="form-control" placeholder="Enter First Name" />
+                    <span asp-validation-for="Employee.FName" class="text-danger"></span>
 
                 </div>
 
                 <div class="col-md-5">
 
                     <label for="First Name">Last Name</label>
-                    <input asp-for="employee.LName" class="form-control" placeholder="Enter Last Name" />
-                    <span asp-validation-for="employee.LName" class="text-danger"></span>
+                    <input asp-for="Employee.LName" class="form-control" placeholder="Enter Last Name" />
+                    <span asp-validation-for="Employee.LName" class="text-danger"></span>
 
                 </div>
 
                 <div class="col-md-2">
 
                     <label for="First Name">Title</label>
-                    <input asp-for="employee.title" class="form-control" placeholder="Male/Female/Other" />
-                    <span asp-validation-for="employee.LName" class="text-danger"></span>
+                    <input asp-for="Employee.title" class="form-control" placeholder="Male/Female/Other" />
+                    <span asp-validation-for="Employee.LName" class="text-danger"></span>
 
                 </div>
 
@@ -49,8 +49,8 @@
                 <div class="col-md-12">
 
                     <label for="First Name">Address Line1</label>
-                    <input asp-for="employee.AddressLine1" class="form-control" placeholder="Enter Address Line1" />
-                    <span asp-validation-for="employee.AddressLine1" class="text-danger"></span>
+                    <input asp-for="Employee.AddressLine1" class="form-control" placeholder="Enter Address Line1" />
+                    <span asp-validation-for="Employee.AddressLine1" class="text-danger"></span>
                 </div>
 
 
@@ -59,15 +59,15 @@
                 <div class="col-md-6">
 
                     <label for="Address Line 2">Address Line2</label>
-                    <input asp-for="employee.AddressLine2" class="form-control" placeholder="Enter Address Line2" />
-                    <span asp-validation-for="employee.AddressLine2" class="text-danger"></span>
+                    <input asp-for="Employee.AddressLine2" class="form-control" placeholder="Enter Address Line2" />
+                    <span asp-validation-for="Employee.AddressLine2" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
 
                     <label for="Phone Number">Phone Number</label>
-                    <input asp-for="employee.PhoneNumber" class="form-control" placeholder="Enter Phone Number" />
-                    <span asp-validation-for="employee.PhoneNumber" class="text-danger"></span>
+                    <input asp-for="Employee.PhoneNumber" class="form-control" placeholder="Enter Phone Number" />
+                    <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
                 </div>
 
 
@@ -80,24 +80,24 @@
                 <div class="col-md-5">
 
                     <label for="City">City</label>
-                    <input asp-for="employee.City" class="form-control" placeholder="Enter City Name" />
-                    <span asp-validation-for="employee.City" class="text-danger"></span>
+                    <input asp-for="Employee.City" class="form-control" placeholder="Enter City Name" />
+                    <span asp-validation-for="Employee.City" class="text-danger"></span>
 
                 </div>
 
                 <div class="col-md-5">
 
                     <label for="State">State</label>
-                    <input asp-for="employee.State" class="form-control" placeholder="Enter State Name" />
-                    <span asp-validation-for="employee.State" class="text-danger"></span>
+                    <input asp-for="Employee.State" class="form-control" placeholder="Enter State Name" />
+                    <span asp-validation-for="Employee.State" class="text-danger"></span>
 
                 </div>
 
                 <div class="col-md-2">
 
                     <label for="Zip Code">Zip</label>
-                    <input asp-for="employee.Zip" class="form-control" placeholder="Zip Code" />
-                    <span asp-validation-for="employee.Zip" class="text-danger"></span>
+                    <input asp-for="Employee.Zip" class="form-control" placeholder="Zip Code" />
+                    <span asp-validation-for="Employee.Zip" class="text-danger"></span>
 
                 </div>
 
@@ -109,15 +109,15 @@
                 <div class="col-md-6">
 
                     <label for="User Name/ User Email">User Name/ User Email</label>
-                    <input asp-for="employee.Email" class="form-control" placeholder="Enter User email/name" />
-                    <span asp-validation-for="employee.Email" class="text-danger"></span>
+                    <input asp-for="Employee.Email" class="form-control" placeholder="Enter User email/name" />
+                    <span asp-validation-for="Employee.Email" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
 
                     <label for="Password">Password</label>
-                    <input asp-for="employee.Password" class="form-control" placeholder="Create Password" />
-                    <span asp-validation-for="employee.Password" class="text-danger"></span>
+                    <input asp-for="Employee.Password" class="form-control" type="password" placeholder="Create Password" />
+                    <span asp-validation-for="Employee.Password" class="text-danger"></span>
                 </div>
 
 

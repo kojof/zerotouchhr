@@ -8,48 +8,52 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class="container">
 
 
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-info border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-page="/Index" style="color:ghostwhite"><strong>ZeroTouchHr</strong></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-page="/EmployeeList/Create" style="color:ghostwhite">Create Employee</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-page="/EmployeeList/Index" style="color:ghostwhite">Employees</a>
-                            </li>
-                        </ul>
-                    </div>
+<div class="container">
+
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-info border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-light" asp-area="" asp-page="/Index"><strong>ZeroTouchHr</strong></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link  text-light" asp-area="" asp-page="/AboutUs/index">About Us</a>
+                    </li>
+                </ul>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+
+
+                    </ul>
+                    <partial name="_LoginPartial" />
                 </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
+    </header>
 
-    </div>
+</div>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        &copy; 2020 - ZeroTouchHr - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
+</footer>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - ZeroTouchHr - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @RenderSection("Scripts", required: false)
+@RenderSection("Scripts", required: false)
 </body>
 </html>
