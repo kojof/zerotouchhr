@@ -24,21 +24,8 @@ namespace ZeroTouchHR
         {
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
-                .AddCookie()
-                .AddOpenIdConnect(options =>
-                {
-                    options.ResponseType = "code";
-                    options.MetadataAddress = "https://cognito-idp:us-east-1:201570980060:userpool/us-east-1_TbTe7KOdI/.well-known/openid-configuration";
-                    options.ClientId = "6imrdvap45iopr9v1gc69jtees";
-                    options.ClientSecret = "1qle0t4vpaltlp06glp9qkltuqm3r87qhp3bbv37d22c2ll2145n";
-
-                });
+            services.AddControllersWithViews();
+            services.AddCognitoIdentity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +34,7 @@ namespace ZeroTouchHR
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {
@@ -54,14 +42,14 @@ namespace ZeroTouchHR
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
+          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
