@@ -10,7 +10,7 @@ using ZeroTouchHR.Models;
 
 namespace ZeroTouchHR.Pages.EmployeeList
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
 

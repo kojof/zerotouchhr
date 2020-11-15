@@ -15,7 +15,7 @@ using ZeroTouchHR.Pages.Account;
 namespace ZeroTouchHR.Pages.EmployeeList
 {
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
 
@@ -78,7 +78,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                   // await _signInManager.SignInAsync(user, isPersistent: false);
 
                     //return RedirectToPage("./Account/ConfirmAccount");
                     return RedirectToPage("Index");
