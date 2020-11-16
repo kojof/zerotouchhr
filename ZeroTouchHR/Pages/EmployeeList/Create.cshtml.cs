@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Amazon.AspNetCore.Identity.Cognito;
 using Amazon.Extensions.CognitoAuthentication;
@@ -8,9 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ZeroTouchHR.Domain.Entities;
 using ZeroTouchHR.Models;
 using ZeroTouchHR.Pages.Account;
+using ZeroTouchHR.Services;
+using ZeroTouchHR.Services.Interfaces;
 
 namespace ZeroTouchHR.Pages.EmployeeList
 {
@@ -24,14 +29,19 @@ namespace ZeroTouchHR.Pages.EmployeeList
         private readonly CognitoUserManager<CognitoUser> _userManager;
         private readonly ILogger<CreateModel> _logger;
         private readonly CognitoUserPool _pool;
+        private readonly ISQSService _sQSService;
+      //  private readonly IConfiguration _configuration;
+        //private IConfiguration _configuration;
 
-        public CreateModel(ApplicationDbContext db, UserManager<CognitoUser> userManager, SignInManager<CognitoUser> signInManager, ILogger<CreateModel> logger, CognitoUserPool pool)
+        public CreateModel(ApplicationDbContext db, UserManager<CognitoUser> userManager, SignInManager<CognitoUser> signInManager, ILogger<CreateModel> logger, CognitoUserPool pool, ISQSService sQSService)
         {
             _db = db;
             _userManager = userManager as CognitoUserManager<CognitoUser>;
             _signInManager = signInManager;
             _logger = logger;
             _pool = pool;
+            _sQSService = sQSService;
+            // _configuration = configuration;
         }
 
         [BindProperty]
@@ -78,7 +88,13 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                   // await _signInManager.SignInAsync(user, isPersistent: false);
+                  //  string message = "dsadd user \"cn=kishore,ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com\" -fn Kishore -ln Poosa -pwd $ervice1@3 -email kishore3886@gmail.com -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
+                    
+                  
+                  var adUserCredentials = CreateAdUserCredentials();
+
+                    var  messageSent = await _sQSService.SendMessageAsync(adUserCredentials);
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
 
                     //return RedirectToPage("./Account/ConfirmAccount");
                     return RedirectToPage("Index");
@@ -91,6 +107,19 @@ namespace ZeroTouchHR.Pages.EmployeeList
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private ADUserCredentials CreateAdUserCredentials()
+        {
+            ADUserCredentials adUserCredentials = new ADUserCredentials
+            {
+                Email = Employee.Email,
+                FirstName = Employee.FName,
+                LastName = Employee.LName,
+                Password = Employee.Password,
+                UserName = Employee.UserName
+            };
+            return adUserCredentials;
         }
 
 

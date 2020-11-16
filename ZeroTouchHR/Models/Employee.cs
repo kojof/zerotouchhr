@@ -28,5 +28,8 @@ namespace ZeroTouchHR.Models
 
         public string Status { get; set; }
 
+        [Required]
+        public string UserName { get; set; }
+
     }
 }
