@@ -88,7 +88,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                  //  string message = "dsadd user \"cn=kishore,ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com\" -fn Kishore -ln Poosa -pwd $ervice1@3 -email kishore3886@gmail.com -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
+                  //  string message = "dsadd user cn=kishore,ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com -fn Kishore -ln Poosa -pwd $ervice1@3 -email kishore3886@gmail.com -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
                     
                   
                   var adUserCredentials = CreateAdUserCredentials();

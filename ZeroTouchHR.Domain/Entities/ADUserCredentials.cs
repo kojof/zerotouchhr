@@ -16,7 +16,7 @@
         public override string ToString()
         {
             return
-                $@"dsadd user ""cn={UserName},ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com""  -fn {FirstName} -ln {LastName}  -pwd {Password}  -email {Email} -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
+                $@"dsadd user cn={UserName},ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com -fn {FirstName} -ln {LastName}  -pwd {Password}  -email {Email} -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
         }
     }
 }
