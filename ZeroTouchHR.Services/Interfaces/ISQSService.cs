@@ -8,6 +8,6 @@ namespace ZeroTouchHR.Services.Interfaces
     public interface ISQSService
     {
         Task<bool> SendMessageAsync(ADUserCredentials aDUserCredentials);
-        Task<IEnumerable<Message>> ReceiveMessageAsync();
+        Task<IEnumerable<Message>> ReceiveMessageAsync(string queueName);
     }
 }

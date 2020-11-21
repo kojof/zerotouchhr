@@ -36,7 +36,7 @@ namespace ZeroTouchHR.Services
         {
             try
             {
-                string sqlUrl = _configuration.GetSection("AWS").GetSection("SQS").Value;
+                string sqlUrl = _configuration.GetSection("AWS").GetSection("UsersForActiveDirectorSQSQueue").Value;
 
                 string message = JsonConvert.SerializeObject(aDUserCredentials.ToString());
 
@@ -54,11 +54,11 @@ namespace ZeroTouchHR.Services
             }
         }
 
-        public async Task<IEnumerable<Message>> ReceiveMessageAsync()
+        public async Task<IEnumerable<Message>> ReceiveMessageAsync(string queueName)
         {
             try
             {
-                string sqlUrl = _configuration.GetSection("AWS").GetSection("SQS").Value;
+                string sqlUrl = _configuration.GetSection("AWS").GetSection(queueName).Value;
 
                 //Create New instance  
                 var request = new ReceiveMessageRequest
