@@ -24,9 +24,9 @@ namespace ZeroTouchHR.ADUserProcessor
         }
 
 
-        public async Task<IEnumerable<string>> ReceiveMessageAsync()
+        public async Task<IEnumerable<string>> ReceiveMessageAsync(string queueName)
         {
-            var messages = await _sQSService.ReceiveMessageAsync();
+            var messages = await _sQSService.ReceiveMessageAsync(queueName);
             return messages.Select(x => x.Body);
         }
 

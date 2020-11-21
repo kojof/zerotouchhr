@@ -50,6 +50,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 EmpFromDb.Email = employee.Email;
                 EmpFromDb.Password = employee.Password;
                 EmpFromDb.Status = "Started";
+                EmpFromDb.UserName = employee.UserName;
                 //employee.Status = "Started";
                 //await _db.employee.AddAsync(employee);
                 //await _db.SaveChangesAsync();

@@ -113,18 +113,26 @@
         <div class="border container" style="padding:40px">
 
             <div class="form-group row">
-                <div class="col-md-6">
+                <div class="col-md-5">
 
                     <label for="User Name/ User Email">User Name/ User Email</label>
                     <input asp-for="employee.Email" class="form-control" placeholder="Enter User email/name" />
                     <span asp-validation-for="employee.Email" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-5">
 
                     <label for="Password">Password</label>
                     <input asp-for="employee.Password" class="form-control" placeholder="Create Password" />
                     <span asp-validation-for="employee.Password" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2">
+
+                    <label for="UserName">UserName</label>
+                    <input asp-for="employee.UserName" class="form-control" placeholder=" Enter UserName" />
+                    <span asp-validation-for="employee.UserName" class="text-danger"></span>
+
                 </div>
 
 
