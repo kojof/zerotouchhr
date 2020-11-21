@@ -30,5 +30,21 @@ namespace ZeroTouchHR.Pages.EmployeeList
             employeesCompleted = await _db.employee.Where(e => e.Status == "Completed").ToListAsync();
 
         }
+
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+
+            var emp = await _db.employee.FindAsync(id);
+
+            if(emp==null)
+            {
+
+                return NotFound();
+            }
+
+            _db.employee.Remove(emp);
+            await _db.SaveChangesAsync();
+            return RedirectToPage("Index");
+        }
     }
 }
