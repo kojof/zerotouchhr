@@ -50,8 +50,11 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                 catch (Exception e)
                 {
                     _logger.LogError(e.InnerException.ToString());
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e.InnerException);
                     Console.WriteLine(e);
-                    throw;
+                 
+                    //     throw;
                 }
 
                 _logger.LogInformation("WorkerProcessor running at: {time}", DateTimeOffset.Now);

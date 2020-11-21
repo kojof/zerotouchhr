@@ -40,10 +40,10 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
                     string queueName = "UsersForActiveDirectorSQSQueue";
                     var result = await _sQSService.ReceiveMessageAsync(queueName);
 
-                 if (result != null)
-                 {
+                    if (result != null && result.Any())
+                    {
 
-                     var messages = result.Select(x => x.Body);
+                        var messages = result.Select(x => x.Body);
                      await SaveMessageToBatchFile(messages);
                     }
 
@@ -69,6 +69,7 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
             foreach (var message in messageList)
             {
                 Console.WriteLine(message);
+          
                 string fileName = Guid.NewGuid().ToString() + ".bat";
 
                 var fileDirectory = _configuration["BatchFilePath"];
@@ -84,15 +85,15 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
                 }
 
                 // Open the stream and read it back.
-                using (StreamReader sr = File.OpenText(filePath))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(s);
+                //using (StreamReader sr = File.OpenText(filePath))
+                //{
+                //    string s = "";
+                //    while ((s = sr.ReadLine()) != null)
+                //    {
+                //        Console.WriteLine(s);
 
-                    }
-                }
+                //    }
+                //}
 
                 await RunBatchFile(fileDirectory, fileName);
             }

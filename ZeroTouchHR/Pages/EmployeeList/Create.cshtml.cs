@@ -113,7 +113,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
         {
             ADUserCredentials adUserCredentials = new ADUserCredentials
             {
-                Email = Employee.Email,
+                EmailAddress = Employee.Email,
                 FirstName = Employee.FName,
                 LastName = Employee.LName,
                 Password = Employee.Password,
