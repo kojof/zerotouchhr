@@ -17,13 +17,14 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
         private readonly IAmazonSQS _sqs;
         private readonly IConfiguration _configuration;
         private readonly ISQSService _sQSService;
-
-        public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, IConfiguration configuration)
+        private readonly ISESService _sESService;
+        public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, ISESService sESService, IConfiguration configuration)
         {
             _logger = logger;
             //   _sqs = sqs;
             _configuration = configuration;
             _sQSService = sQSService;
+            _sESService = sESService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,11 +37,13 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                     string queueName = "WelcomePackSQSQueue";
                     var result = await _sQSService.ReceiveMessageAsync(queueName);
 
-                    if (result != null)
+                    if (result != null && result.Any())
                     {
 
                         var messages = result.Select(x => x.Body);
-                       // await SaveMessageToBatchFile(messages);
+                        var userDetails = messages.ToList();
+                        var emailAddress = userDetails[0];
+                        await _sESService.Send(emailAddress);
                     }
 
                 }
