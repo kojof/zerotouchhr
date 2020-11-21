@@ -35,9 +35,10 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
-                { 
+                {
                     //get messages
-                 var result = await _sQSService.ReceiveMessageAsync();
+                    string queueName = "UsersForActiveDirectorSQSQueue";
+                    var result = await _sQSService.ReceiveMessageAsync(queueName);
 
                  if (result != null)
                  {
