@@ -1,15 +1,10 @@
 ﻿@page
-@model ZeroTouchHR.Pages.EmployeeList.EditModel
+@model ZeroTouchHR.Pages.User.IndexModel
 @{
 
-    ViewData["Title"] = "Edit";
 }
 
-
-<br />
-
-<h2 class="text-info">Edit User </h2>
-<br />
+<h2 class="text-info"> User Verification</h2>
 
 
 <div class="border container" style="padding:30px">
@@ -29,7 +24,7 @@
                 <div class="col-md-5">
 
                     <label for="First Name">First Name</label>
-                    <input asp-for="employee.FName" class="form-control" placeholder="Enter First Name" />
+                    <input asp-for="employee.FName" class="form-control" placeholder="Enter First Name" readonly />
                     <span asp-validation-for="employee.FName" class="text-danger"></span>
 
                 </div>
@@ -37,7 +32,7 @@
                 <div class="col-md-5">
 
                     <label for="First Name">Last Name</label>
-                    <input asp-for="employee.LName" class="form-control" placeholder="Enter Last Name" />
+                    <input asp-for="employee.LName" class="form-control" placeholder="Enter Last Name" readonly/>
                     <span asp-validation-for="employee.LName" class="text-danger"></span>
 
                 </div>
@@ -45,7 +40,7 @@
                 <div class="col-md-2">
 
                     <label for="First Name">Title</label>
-                    <input asp-for="employee.title" class="form-control" placeholder="Male/Female/Other" />
+                    <input asp-for="employee.title" class="form-control" placeholder="Male/Female/Other" readonly/>
                     <span asp-validation-for="employee.LName" class="text-danger"></span>
 
                 </div>
@@ -56,7 +51,7 @@
                 <div class="col-md-12">
 
                     <label for="First Name">Address Line1</label>
-                    <input asp-for="employee.AddressLine1" class="form-control" placeholder="Enter Address Line1" />
+                    <input asp-for="employee.AddressLine1" class="form-control" placeholder="Enter Address Line1" readonly/>
                     <span asp-validation-for="employee.AddressLine1" class="text-danger"></span>
                 </div>
 
@@ -66,14 +61,14 @@
                 <div class="col-md-6">
 
                     <label for="Address Line 2">Address Line2</label>
-                    <input asp-for="employee.AddressLine2" class="form-control" placeholder="Enter Address Line2" />
+                    <input asp-for="employee.AddressLine2" class="form-control" placeholder="Enter Address Line2" readonly/>
                     <span asp-validation-for="employee.AddressLine2" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
 
                     <label for="Phone Number">Phone Number</label>
-                    <input asp-for="employee.PhoneNumber" class="form-control" placeholder="Enter Phone Number" />
+                    <input asp-for="employee.PhoneNumber" class="form-control" placeholder="Enter Phone Number" readonly/>
                     <span asp-validation-for="employee.PhoneNumber" class="text-danger"></span>
                 </div>
 
@@ -87,7 +82,7 @@
                 <div class="col-md-5">
 
                     <label for="City">City</label>
-                    <input asp-for="employee.City" class="form-control" placeholder="Enter City Name" />
+                    <input asp-for="employee.City" class="form-control" placeholder="Enter City Name" readonly/>
                     <span asp-validation-for="employee.City" class="text-danger"></span>
 
                 </div>
@@ -95,7 +90,7 @@
                 <div class="col-md-5">
 
                     <label for="State">State</label>
-                    <input asp-for="employee.State" class="form-control" placeholder="Enter State Name" />
+                    <input asp-for="employee.State" class="form-control" placeholder="Enter State Name" readonly/>
                     <span asp-validation-for="employee.State" class="text-danger"></span>
 
                 </div>
@@ -103,7 +98,7 @@
                 <div class="col-md-2">
 
                     <label for="Zip Code">Zip</label>
-                    <input asp-for="employee.Zip" class="form-control" placeholder="Zip Code" />
+                    <input asp-for="employee.Zip" class="form-control" placeholder="Zip Code" readonly/>
                     <span asp-validation-for="employee.Zip" class="text-danger"></span>
 
                 </div>
@@ -113,26 +108,18 @@
         <div class="border container" style="padding:40px">
 
             <div class="form-group row">
-                <div class="col-md-5">
+                <div class="col-md-6">
 
                     <label for="User Name/ User Email">User Name/ User Email</label>
-                    <input asp-for="employee.Email" class="form-control" placeholder="Enter User email/name" />
+                    <input asp-for="employee.Email" class="form-control" placeholder="Enter User email/name" readonly/>
                     <span asp-validation-for="employee.Email" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-md-6">
 
                     <label for="Password">Password</label>
-                    <input asp-for="employee.Password" class="form-control" placeholder="Create Password" />
+                    <input asp-for="employee.Password" class="form-control" placeholder="Create Password" readonly/>
                     <span asp-validation-for="employee.Password" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-2">
-
-                    <label for="UserName">UserName</label>
-                    <input asp-for="employee.UserName" class="form-control" placeholder=" Enter UserName" />
-                    <span asp-validation-for="employee.UserName" class="text-danger"></span>
-
                 </div>
 
 
@@ -141,9 +128,9 @@
         <br>
         <div class="form-group row">
 
-            <div class="col-3 offset-3">
+            @*<div class="col-3 offset-3">
                 <input type="submit" value="Update" class="btn btn-outline-success" />
-            </div>
+            </div>*@
             <div class="col-3">
 
                 <a asp-page="Index" class="btn btn-outline-info">Back To List</a>

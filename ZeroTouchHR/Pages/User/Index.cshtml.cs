@@ -2,19 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZeroTouchHR.Models;
 
-namespace ZeroTouchHR.Pages.EmployeeList
+namespace ZeroTouchHR.Pages.User
 {
-    [Authorize(Roles = "Admin")]
-    public class EditModel : PageModel
+    public class IndexModel : PageModel
     {
-        private ApplicationDbContext _db;
 
-        public EditModel(ApplicationDbContext db)
+        private ApplicationDbContext _db;
+        public IndexModel(ApplicationDbContext db)
         {
 
             _db = db;
@@ -29,6 +27,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
 
 
         }
+
 
         public async Task<IActionResult> OnPost()
         {
@@ -50,7 +49,6 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 EmpFromDb.Email = employee.Email;
                 EmpFromDb.Password = employee.Password;
                 EmpFromDb.Status = "Started";
-                EmpFromDb.UserName = employee.UserName;
                 //employee.Status = "Started";
                 //await _db.employee.AddAsync(employee);
                 //await _db.SaveChangesAsync();
@@ -62,5 +60,6 @@ namespace ZeroTouchHR.Pages.EmployeeList
             return RedirectToPage();
 
         }
+
     }
 }
