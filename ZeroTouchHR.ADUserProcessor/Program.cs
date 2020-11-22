@@ -20,8 +20,8 @@ namespace ZeroTouchHR.ADUserProcessor
           
 
             //.("BatchFile").GetSection("FilePath").Value;
-
-            var messageList = await service.ReceiveMessageAsync();
+            string queueName = "UsersForActiveDirectorSQSQueue";
+            var messageList = await service.ReceiveMessageAsync(queueName);
 
             service.SaveMessageToBatchFile(messageList);
 

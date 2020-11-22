@@ -2,8 +2,8 @@
 
 namespace ZeroTouchHR.Services.Interfaces
 {
-    public interface IEmailService
+    public interface ISESService
     {
-        Task Send();
+        Task Send(string emailAddress);
     }
 }
