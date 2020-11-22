@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.ADUserProcessor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.Domain", "..\ZeroTouchHR.Domain\ZeroTouchHR.Domain.csproj", "{3576899C-89E1-4042-BC09-FF5398D35B05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroTouchHR.SQSProcessor.WorkerService", "..\ZeroTouchHR.WorkerService\ZeroTouchHR.SQSProcessor.WorkerService.csproj", "{0AE07BCA-8986-4364-9A51-494D2AFEAA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.SQSProcessor.WorkerService", "..\ZeroTouchHR.WorkerService\ZeroTouchHR.SQSProcessor.WorkerService.csproj", "{0AE07BCA-8986-4364-9A51-494D2AFEAA33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
