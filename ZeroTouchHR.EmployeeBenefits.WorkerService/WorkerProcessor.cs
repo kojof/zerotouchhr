@@ -33,6 +33,9 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                 {
                     //get messages
                     string queueName = "WelcomePackSQSQueue";
+
+
+
                     var result = await _sQSService.ReceiveMessageAsync(queueName);
 
                     if (result != null && result.Any())
@@ -40,7 +43,7 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
 
                         var messages = result.Select(x => x.Body);
                         var userDetails = messages.ToList();
-                        var emailAddress = userDetails[0];
+                        var emailAddress = "kojof@calabashmedia.com"; 
                         await _sESService.Send(emailAddress);
                     }
 
