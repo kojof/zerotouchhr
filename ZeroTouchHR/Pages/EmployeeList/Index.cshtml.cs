@@ -23,11 +23,14 @@ namespace ZeroTouchHR.Pages.EmployeeList
         }
 
         public IEnumerable<Employee> employees { get; set; }
+        public IEnumerable<Employee> employeesUserVerified { get; set; }
+
         public IEnumerable<Employee> employeesCompleted { get; set; }
 
         public async Task OnGet()
         {
             employees = await _db.employee.Where(e => e.Status == "Started").ToListAsync();
+            employeesUserVerified = await _db.employee.Where(e => e.Status == "User Verified").ToListAsync();
             employeesCompleted = await _db.employee.Where(e => e.Status == "Completed").ToListAsync();
 
         }

@@ -26,7 +26,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
         {
 
             ViewData["StartedCount"] = _db.employee.Where(e => e.Status == "Started").Count();
-            ViewData["InprocessCount"] = _db.employee.Where(e => e.Status == "Inprocess").Count();
+            ViewData["InprocessCount"] = _db.employee.Where(e => e.Status == "User Verified").Count();
             ViewData["CompletedCount"] = _db.employee.Where(e => e.Status == "Completed").Count();
 
         }
