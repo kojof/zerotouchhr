@@ -36,6 +36,7 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                     var options = hostContext.Configuration.GetAWSOptions();
                     services.AddDefaultAWSOptions(options);
                     services.AddTransient<ISQSService, SQSService>();
+                    services.AddTransient<ISESService, SESService>();
                     services.AddAWSService<IAmazonSQS>();
 
                     // WorkerProcessor Service

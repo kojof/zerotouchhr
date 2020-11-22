@@ -26,7 +26,6 @@ namespace ZeroTouchHR.Services
         public SQSService(ILogger<SQSService> logger, IAmazonSQS sqs, IConfiguration configuration)
         {
             this._sqs = sqs;
-            //  this._sqsUrl = sqsUrl;
             _configuration = configuration;
             _logger = logger;
         }
@@ -38,9 +37,9 @@ namespace ZeroTouchHR.Services
             {
                 string sqlUrl = _configuration.GetSection("AWS").GetSection("UsersForActiveDirectorSQSQueue").Value;
 
-                string message = JsonConvert.SerializeObject(aDUserCredentials.ToString());
-
-                var sendRequest = new SendMessageRequest(sqlUrl, message);
+          //      string message = JsonConvert.SerializeObject(aDUserCredentials.ToString());
+          
+                var sendRequest = new SendMessageRequest(sqlUrl, aDUserCredentials.ToString());
                 sendRequest.MessageGroupId = "ZeroTouchHR";
                 // Post message or payload to queue  
                 var sendResult = await _sqs.SendMessageAsync(sendRequest);
