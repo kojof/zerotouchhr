@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.SimpleEmail;
 using Amazon.SQS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,10 +35,13 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                 {
                     // AWS Configuration
                     var options = hostContext.Configuration.GetAWSOptions();
+                    Console.WriteLine(options);
                     services.AddDefaultAWSOptions(options);
+                    services.AddAWSService<IAmazonSQS>();
+                    services.AddAWSService<IAmazonSimpleEmailService>();
                     services.AddTransient<ISQSService, SQSService>();
                     services.AddTransient<ISESService, SESService>();
-                    services.AddAWSService<IAmazonSQS>();
+                  
 
                     // WorkerProcessor Service
                     services.AddHostedService<WorkerProcessor>();
