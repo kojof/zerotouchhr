@@ -87,7 +87,7 @@ namespace ZeroTouchHR.Pages.User
                 //return RedirectToPage("Index");
                // await _db.SaveChangesAsync();
                 //Push the file to s3 using awssdk
-                UpLoadTOs3.PushToS3();
+                //UpLoadTOs3.PushToS3();
                 return RedirectToPage("Thankyou");
             }
 
