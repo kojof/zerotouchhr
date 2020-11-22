@@ -27,11 +27,14 @@ namespace ZeroTouchHR.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+
         public class InputModel
         {
             [Required]
             [Display(Name = "Code")]
             public string Code { get; set; }
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -42,10 +45,11 @@ namespace ZeroTouchHR.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+          
             if (ModelState.IsValid)
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-
+               // var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+               var userId = Input.UserName;
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user == null)
                 {
