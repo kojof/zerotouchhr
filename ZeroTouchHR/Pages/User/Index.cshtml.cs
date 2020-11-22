@@ -49,9 +49,9 @@ namespace ZeroTouchHR.Pages.User
 
         public EmployeePhoto empPhoto { get; set; }
 
-        public async Task OnGet(string email)
+        public async Task OnGet()
         {
-             email = "kishore3886@gmail.com";
+             var email = Request.Query["EmailAddress"];
             //check it for user name
             // employee = _db.employee.Where(x => x.Email == email).FirstOrDefault();
             var emp = _db.employee.Where(x => x.Email == email).FirstOrDefault();
@@ -87,7 +87,7 @@ namespace ZeroTouchHR.Pages.User
                 //return RedirectToPage("Index");
                // await _db.SaveChangesAsync();
                 //Push the file to s3 using awssdk
-                UpLoadTOs3.PushToS3();
+             //   UpLoadTOs3.PushToS3();
                 return RedirectToPage("Thankyou");
             }
 

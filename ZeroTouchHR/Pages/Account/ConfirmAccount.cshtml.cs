@@ -63,7 +63,8 @@ namespace ZeroTouchHR.Pages.Account
                 }
                 else
                 {
-                    return returnUrl != null ? LocalRedirect(returnUrl) : Page() as IActionResult;
+                    // return returnUrl != null ? LocalRedirect(returnUrl) : Page() as IActionResult;
+                    return RedirectToPage("./User/Index?EmailAddress=" + userId);
                 }
             }
 
