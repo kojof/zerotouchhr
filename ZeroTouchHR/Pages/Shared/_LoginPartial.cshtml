@@ -17,6 +17,9 @@
         </ul>*@
 
         <ul class="navbar-nav flex-grow-1">
+        @if (User.IsInRole("Admin"))
+        {
+
             <li class="nav-item">
                 <a class="nav-link  text-light" asp-page="/EmployeeList/DashBoard">Dashboard</a>
             </li>
@@ -27,7 +30,7 @@
                 <a class="nav-link  text-light" asp-page="/EmployeeList/Create" title="Register">Create Employee</a>
             </li>
 
-
+        }
             <li class="nav-item mr-5">
                 &nbsp;
             </li>
