@@ -16,10 +16,12 @@ namespace ZeroTouchHR.Pages.User
     public class ConfirmAccountModel : PageModel
     {
         private readonly CognitoUserManager<CognitoUser> _userManager;
+        private readonly SignInManager<CognitoUser> _signInManager;
 
-        public ConfirmAccountModel(UserManager<CognitoUser> userManager)
+        public ConfirmAccountModel(UserManager<CognitoUser> userManager, SignInManager<CognitoUser> signInManager)
         {
             _userManager = userManager as CognitoUserManager<CognitoUser>;
+            _signInManager = signInManager;
         }
 
         [BindProperty]
@@ -35,6 +37,11 @@ namespace ZeroTouchHR.Pages.User
             public string Code { get; set; }
             [Display(Name = "UserName")]
             public string UserName { get; set; }
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -63,7 +70,7 @@ namespace ZeroTouchHR.Pages.User
                 }
                 else
                 {
-                   
+                    var response = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                     return RedirectToPage("./Index", new {emailAddress = userId });
                 }
             }
