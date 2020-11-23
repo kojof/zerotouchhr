@@ -49,9 +49,97 @@ namespace ZeroTouchHR.Pages.User
 
         public EmployeePhoto empPhoto { get; set; }
 
-        public async Task OnGet()
+
+        private const string bucketName = "zerotouchhr";
+        private const string keyName = "TempUserFIle";
+        private const string filePath = @"C:\Users\kisho\Downloads";
+        // Specify your bucket region (an example region is shown).
+        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
+        private static IAmazonS3 s3Client;
+
+
+        public static void PushToS3(string filePath)
         {
-             var email = Request.Query["EmailAddress"];
+            s3Client = new AmazonS3Client(bucketRegion);
+            UploadFileAsync().Wait();
+        }
+
+        private static async Task UploadFileAsync()
+        {
+            try
+            {
+                var fileTransferUtility =
+                    new TransferUtility(s3Client);
+
+                // Option 1. Upload a file. The file name is used as the object key name.
+                //await fileTransferUtility.UploadAsync(filePath, bucketName);
+                //Console.WriteLine("Upload 1 completed");
+
+                //// Option 2. Specify object key name explicitly.
+                ///
+                string folderInS3 = bucketName + "/" + "kishore3886@gmail.com";
+                await fileTransferUtility.UploadAsync(filePath, folderInS3, keyName);
+                Console.WriteLine("Upload 2 completed");
+
+
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+
+        }
+
+
+        public async Task CreateFoldersAsync(string bucketName, string path)
+        {
+            // path = path.EnsureEndsWith('/');
+
+            //need to pass our access key and secret key
+
+            //give path as emial id
+
+            path = "kishroe3886@gmail.com";
+            string AccessKeyId = "";
+            string SecretAccessKey = "";
+            IAmazonS3 client =
+                new AmazonS3Client(AccessKeyId, SecretAccessKey,
+                RegionEndpoint.EUWest1);
+
+            var findFolderRequest = new ListObjectsV2Request();
+            findFolderRequest.BucketName = bucketName;
+            findFolderRequest.Prefix = path;
+
+            ListObjectsV2Response findFolderResponse =
+               await client.ListObjectsV2Async(findFolderRequest);
+
+
+            if (findFolderResponse.S3Objects.Any())
+            {
+                return;
+            }
+
+            PutObjectRequest request = new PutObjectRequest()
+            {
+                BucketName = bucketName,
+                StorageClass = S3StorageClass.Standard,
+                ServerSideEncryptionMethod = ServerSideEncryptionMethod.None,
+                Key = path,
+                ContentBody = string.Empty
+            };
+
+            // add try catch in case you have exceptions shield/handling here 
+            PutObjectResponse response = await client.PutObjectAsync(request);
+        }
+
+
+        public async Task OnGet(string email)
+        {
+             email = "kishore3886@gmail.com";
             //check it for user name
             // employee = _db.employee.Where(x => x.Email == email).FirstOrDefault();
             var emp = _db.employee.Where(x => x.Email == email).FirstOrDefault();
@@ -80,6 +168,13 @@ namespace ZeroTouchHR.Pages.User
                 //EmpFromDb.Zip = employee.Zip;
                 //EmpFromDb.Email = employee.Email;
                 //EmpFromDb.Password = employee.Password;
+                //----- lets create a folder in bucket
+
+              await CreateFoldersAsync("zeroTouchhr",empPhoto.employee.Email);
+                Console.WriteLine("Done wth  creating a folder in s3 bucket");
+
+                PushToS3("");
+
                 EmpFromDb.Status = "User Verified";
                 //employee.Status = "Started";
                 //await _db.employee.AddAsync(employee);
@@ -87,7 +182,7 @@ namespace ZeroTouchHR.Pages.User
                 //return RedirectToPage("Index");
                // await _db.SaveChangesAsync();
                 //Push the file to s3 using awssdk
-             //   UpLoadTOs3.PushToS3();
+                //UpLoadTOs3.PushToS3();
                 return RedirectToPage("Thankyou");
             }
 
@@ -96,37 +191,41 @@ namespace ZeroTouchHR.Pages.User
         }
 
 
-        string filePath = "";
-        public async Task<IActionResult> upload(EmployeePhoto model)
-        {
+       // string filePath = "";
+        //public async Task<IActionResult> upload(EmployeePhoto model)
+        //{
 
-            if(ModelState.IsValid)
-            {
-                if(model.photo!=null)
-                {
-                    //to get physical path use IHostingEnvironment
-                    //we can set file name as username here
-                    string uploadsFolder= Path.Combine(hostingEnvironment.WebRootPath, "images");
-                    string uniqueName = model.employee.UserName;
-                    filePath = Path.Combine(uploadsFolder, uniqueName);
-                    model.photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
+        //    if(ModelState.IsValid)
+        //    {
+        //        if(model.photo!=null)
+        //        {
+
+        //            //create a folder
+
+
+        //            //to get physical path use IHostingEnvironment
+        //            //we can set file name as username here
+        //            string uploadsFolder= Path.Combine(hostingEnvironment.WebRootPath, "images");
+        //            string uniqueName = model.employee.UserName;
+        //            filePath = Path.Combine(uploadsFolder, uniqueName);
+        //            model.photo.CopyTo(new FileStream(filePath, FileMode.Create));
+        //        }
 
                 
-                Employee employee = new Employee
-                {
+        //        Employee employee = new Employee
+        //        {
 
-                    //write if any field has to be changed - Probably status
-                };
+        //            //write if any field has to be changed - Probably status
+        //        };
 
-                UpLoadTOs3.PushToS3(filePath);
+        //        UpLoadTOs3.PushToS3(filePath);
 
-            }
+        //    }
 
 
 
-            return RedirectToPage();
-        }
+        //    return RedirectToPage();
+        //}
 
         public async Task<IActionResult> OnPostfileUpload(IFormFile file)
         {
@@ -152,108 +251,121 @@ namespace ZeroTouchHR.Pages.User
 
     //}
 
-    class UpLoadTOs3 {
+    //public class UpLoadTOs3 {
 
-        private const string bucketName = "zerotouchhr/users";
-        private const string keyName = "TempUserFIle";
-        private const string filePath = @"C:\Users\kisho\Downloads";
-        // Specify your bucket region (an example region is shown).
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
-        private static IAmazonS3 s3Client;
+    //    private const string bucketName = "zerotouchhr";
+    //    private const string keyName = "TempUserFIle";
+    //    private const string filePath = @"C:\Users\kisho\Downloads";
+    //    // Specify your bucket region (an example region is shown).
+    //    private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
+    //    private static IAmazonS3 s3Client;
 
-
-        public static void PushToS3(string filePath)
-        {
-            s3Client = new AmazonS3Client(bucketRegion);
-            UploadFileAsync().Wait();
-        }
-
-        private static async Task UploadFileAsync()
-        {
-            try
-            {
-                var fileTransferUtility =
-                    new TransferUtility(s3Client);
-
-                // Option 1. Upload a file. The file name is used as the object key name.
-                await fileTransferUtility.UploadAsync(filePath, bucketName);
-                Console.WriteLine("Upload 1 completed");
-
-                //// Option 2. Specify object key name explicitly.
-                //await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
-                //Console.WriteLine("Upload 2 completed");
-
-                //// Option 3. Upload data from a type of System.IO.Stream.
-                //using (var fileToUpload =
-                //    new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                //{
-                //    await fileTransferUtility.UploadAsync(fileToUpload,
-                //                               bucketName, keyName);
-                //}
-                //Console.WriteLine("Upload 3 completed");
-
-                //// Option 4. Specify advanced settings.
-                //var fileTransferUtilityRequest = new TransferUtilityUploadRequest
-                //{
-                //    BucketName = bucketName,
-                //    FilePath = filePath,
-                //    StorageClass = S3StorageClass.StandardInfrequentAccess,
-                //    PartSize = 6291456, // 6 MB.
-                //    Key = keyName,
-                //    CannedACL = S3CannedACL.PublicRead
-                //};
-                //fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
-                //fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
-
-                //await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
-                //Console.WriteLine("Upload 4 completed");
-            }
-            catch (AmazonS3Exception e)
-            {
-                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-            }
-
-        }
+    //    //public static void startUploadProcess()
+    //    //{
 
 
-        //public async Task CreateFoldersAsync(string bucketName, string path)
-        //{
-        //   // path = path.EnsureEndsWith('/');
+    //    //    UpLoadTOs3.crea
 
-        //    //need to pass our access key and secret key
-        //    IAmazonS3 client =
-        //        new AmazonS3Client(AccessKeyId,SecretAccessKey,
-        //        RegionEndpoint.EUWest1);
+    //    //}
 
-        //    var findFolderRequest = new ListObjectsV2Request();
-        //    findFolderRequest.BucketName = bucketName;
-        //    findFolderRequest.Prefix = path;
+    //    public static void PushToS3(string filePath)
+    //    {
+    //        s3Client = new AmazonS3Client(bucketRegion);
+    //        UploadFileAsync().Wait();
+    //    }
 
-        //    ListObjectsV2Response findFolderResponse =
-        //       await client.ListObjectsV2Async(findFolderRequest);
+    //    private static async Task UploadFileAsync()
+    //    {
+    //        try
+    //        {
+    //            var fileTransferUtility =
+    //                new TransferUtility(s3Client);
+
+    //            // Option 1. Upload a file. The file name is used as the object key name.
+    //            //await fileTransferUtility.UploadAsync(filePath, bucketName);
+    //            //Console.WriteLine("Upload 1 completed");
+
+    //            //// Option 2. Specify object key name explicitly.
+    //            await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
+    //            Console.WriteLine("Upload 2 completed");
+
+    //            //// Option 3. Upload data from a type of System.IO.Stream.
+    //            //using (var fileToUpload =
+    //            //    new FileStream(filePath, FileMode.Open, FileAccess.Read))
+    //            //{
+    //            //    await fileTransferUtility.UploadAsync(fileToUpload,
+    //            //                               bucketName, keyName);
+    //            //}
+    //            //Console.WriteLine("Upload 3 completed");
+
+    //            //// Option 4. Specify advanced settings.
+    //            //var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+    //            //{
+    //            //    BucketName = bucketName,
+    //            //    FilePath = filePath,
+    //            //    StorageClass = S3StorageClass.StandardInfrequentAccess,
+    //            //    PartSize = 6291456, // 6 MB.
+    //            //    Key = keyName,
+    //            //    CannedACL = S3CannedACL.PublicRead
+    //            //};
+    //            //fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
+    //            //fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
+
+    //            //await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
+    //            //Console.WriteLine("Upload 4 completed");
+    //        }
+    //        catch (AmazonS3Exception e)
+    //        {
+    //            Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+    //        }
+
+    //    }
 
 
-        //    if (findFolderResponse.S3Objects.Any())
-        //    {
-        //        return;
-        //    }
+    //    public async Task CreateFoldersAsync(string bucketName, string path)
+    //    {
+    //        // path = path.EnsureEndsWith('/');
 
-        //    PutObjectRequest request = new PutObjectRequest()
-        //    {
-        //        BucketName = bucketName,
-        //        StorageClass = S3StorageClass.Standard,
-        //        ServerSideEncryptionMethod = ServerSideEncryptionMethod.None,
-        //        Key = path,
-        //        ContentBody = string.Empty
-        //    };
+    //        //need to pass our access key and secret key
 
-        //    // add try catch in case you have exceptions shield/handling here 
-        //    PutObjectResponse response = await client.PutObjectAsync(request);
-        //}
+    //        //give path as emial id
 
-    }
+    //        path = "kishroe3886@gmail.com";
+    //        string AccessKeyId = "";
+    //        string SecretAccessKey = "";
+    //        IAmazonS3 client =
+    //            new AmazonS3Client(AccessKeyId, SecretAccessKey,
+    //            RegionEndpoint.EUWest1);
+
+    //        var findFolderRequest = new ListObjectsV2Request();
+    //        findFolderRequest.BucketName = bucketName;
+    //        findFolderRequest.Prefix = path;
+
+    //        ListObjectsV2Response findFolderResponse =
+    //           await client.ListObjectsV2Async(findFolderRequest);
+
+
+    //        if (findFolderResponse.S3Objects.Any())
+    //        {
+    //            return;
+    //        }
+
+    //        PutObjectRequest request = new PutObjectRequest()
+    //        {
+    //            BucketName = bucketName,
+    //            StorageClass = S3StorageClass.Standard,
+    //            ServerSideEncryptionMethod = ServerSideEncryptionMethod.None,
+    //            Key = path,
+    //            ContentBody = string.Empty
+    //        };
+
+    //        // add try catch in case you have exceptions shield/handling here 
+    //        PutObjectResponse response = await client.PutObjectAsync(request);
+    //    }
+
+    //}
 }
