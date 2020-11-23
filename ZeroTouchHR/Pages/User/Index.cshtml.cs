@@ -2,9 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZeroTouchHR.Models;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using System.IO;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.AspNetCore.Hosting;
+using Amazon.S3.Model;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using ZeroTouchHR.Services.Interfaces;
 
 namespace ZeroTouchHR.Pages.User
 {
@@ -12,54 +22,60 @@ namespace ZeroTouchHR.Pages.User
     {
 
         private ApplicationDbContext _db;
-        public IndexModel(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostingEnvironment;
+        private const string BUCKET_NAME = "zerotouchhr";
+        private readonly IS3Service _s3Service;
+
+        public IndexModel(ApplicationDbContext db, IWebHostEnvironment webHostingEnvironment, IS3Service s3Service)
         {
 
             _db = db;
+            _webHostingEnvironment = webHostingEnvironment;
+            _s3Service = s3Service;
         }
 
-        [BindProperty]
-        public Employee employee { get; set; }
-        public async Task OnGet(int id)
+        [BindProperty] public Employee Employee { get; set; }
+
+        public async Task UploadFileAsync(string emailAddress)
         {
+            string folderName = emailAddress;
+            var folderPath = Path.Combine(_webHostingEnvironment.WebRootPath, "Files");
 
-            employee = await _db.employee.FindAsync(id);
+            //hard-code this for now, as we don't use the uploaded document 
+            string folderFilePath = Path.Combine(folderPath, "documentverification.txt");
 
-
+            using (FileStream fsSource = new FileStream(folderFilePath, FileMode.Open, FileAccess.Read))
+            {
+                string fileExtension = Path.GetExtension(folderFilePath);
+                //string fileName = string.Empty;
+                string fileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
+                await _s3Service.UploadFile(fsSource, fileName, folderName);
+            }
         }
 
 
-        public async Task<IActionResult> OnPost()
+        public async Task OnGetAsync(string emailAddress)
+        {
+            Employee = _db.employee.FirstOrDefault(x => x.Email == emailAddress);
+        }
+
+        //this is to upload the document as well as push it to s3 bucket
+        public async Task<IActionResult> OnPostAsync()
         {
 
             if (ModelState.IsValid)
             {
 
-                var EmpFromDb = await _db.employee.FindAsync(employee.id);
+                var email = Employee.Email;
 
-                EmpFromDb.FName = employee.FName;
-                EmpFromDb.LName = employee.LName;
-                EmpFromDb.title = employee.title;
-                EmpFromDb.AddressLine1 = employee.AddressLine1;
-                EmpFromDb.AddressLine2 = employee.AddressLine2;
-                EmpFromDb.PhoneNumber = employee.PhoneNumber;
-                EmpFromDb.State = employee.State;
-                EmpFromDb.City = employee.City;
-                EmpFromDb.Zip = employee.Zip;
-                EmpFromDb.Email = employee.Email;
-                EmpFromDb.Password = employee.Password;
-                EmpFromDb.Status = "Started";
-                //employee.Status = "Started";
-                //await _db.employee.AddAsync(employee);
-                //await _db.SaveChangesAsync();
-                //return RedirectToPage("Index");
-                await _db.SaveChangesAsync();
-                return RedirectToPage("Index");
+                //create a file and folder in bucket
+                await UploadFileAsync(email);
+                
+
+                return RedirectToPage("Thankyou");
             }
 
             return RedirectToPage();
-
         }
-
     }
 }

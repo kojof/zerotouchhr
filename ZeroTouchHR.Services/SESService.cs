@@ -47,8 +47,9 @@ namespace ZeroTouchHR.Services
         <head></head>
         <body>
           <h1>Welcome to Zero Touch HR</h1>
-          <p>hi John,</p>
+          <p>hi,</p>
           <p>Please see a list of benefits that you will be receiving as a new employee.</p>
+            <p>Please contact HR Team on this number - +1 216 539 2077 for any queries.</p>
           <p>regards</p>
           <p>HR Admnistrator</p>           
         </body>

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ZeroTouchHR.Pages.Account
+namespace ZeroTouchHR.Pages.User
 {
     [AllowAnonymous]
     public class ConfirmAccountModel : PageModel
@@ -63,8 +63,8 @@ namespace ZeroTouchHR.Pages.Account
                 }
                 else
                 {
-                    // return returnUrl != null ? LocalRedirect(returnUrl) : Page() as IActionResult;
-                    return RedirectToPage("Index" , "User", new {emailAddress = userId });
+                   
+                    return RedirectToPage("./Index", new {emailAddress = userId });
                 }
             }
 

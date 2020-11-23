@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.ADUserProcessor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.Domain", "ZeroTouchHR.Domain\ZeroTouchHR.Domain.csproj", "{3576899C-89E1-4042-BC09-FF5398D35B05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.SQSProcessor.WorkerService", "ZeroTouchHR.SQSProcessor.WorkerService\ZeroTouchHR.SQSProcessor.WorkerService.csproj", "{0AE07BCA-8986-4364-9A51-494D2AFEAA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.SQSProcessor.WorkerService", "ZeroTouchHR.SQSProcessor.WorkerService\ZeroTouchHR.SQSProcessor.WorkerService.csproj", "{3CC899BF-1530-4F40-9753-2289F620AD46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroTouchHR.EmployeeBenefits.WorkerService", "ZeroTouchHR.EmployeeBenefits.WorkerService\ZeroTouchHR.EmployeeBenefits.WorkerService.csproj", "{5F85C2A9-59C0-48BC-827D-329D0A6B5887}"
 EndProject
@@ -37,10 +37,10 @@ Global
 		{3576899C-89E1-4042-BC09-FF5398D35B05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3576899C-89E1-4042-BC09-FF5398D35B05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3576899C-89E1-4042-BC09-FF5398D35B05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0AE07BCA-8986-4364-9A51-494D2AFEAA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AE07BCA-8986-4364-9A51-494D2AFEAA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AE07BCA-8986-4364-9A51-494D2AFEAA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AE07BCA-8986-4364-9A51-494D2AFEAA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC899BF-1530-4F40-9753-2289F620AD46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC899BF-1530-4F40-9753-2289F620AD46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC899BF-1530-4F40-9753-2289F620AD46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC899BF-1530-4F40-9753-2289F620AD46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F85C2A9-59C0-48BC-827D-329D0A6B5887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F85C2A9-59C0-48BC-827D-329D0A6B5887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F85C2A9-59C0-48BC-827D-329D0A6B5887}.Release|Any CPU.ActiveCfg = Release|Any CPU

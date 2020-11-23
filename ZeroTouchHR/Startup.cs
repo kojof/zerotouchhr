@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Amazon.SQS;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -30,7 +31,9 @@ namespace ZeroTouchHR
             services.AddControllersWithViews();
             services.AddCognitoIdentity();
             services.AddAWSService<IAmazonSQS>();
+            services.AddAWSService<IAmazonS3>();
             services.AddTransient<ISQSService, SQSService>();
+            services.AddTransient<IS3Service, S3Service>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

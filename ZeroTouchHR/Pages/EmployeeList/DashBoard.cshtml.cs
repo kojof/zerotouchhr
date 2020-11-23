@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using ZeroTouchHR.Models;
 
 namespace ZeroTouchHR.Pages.EmployeeList
 {
+    [Authorize(Roles = "Admin")]
     public class DashBoardModel : PageModel
     {
 
@@ -26,7 +28,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
         {
 
             ViewData["StartedCount"] = _db.employee.Where(e => e.Status == "Started").Count();
-            ViewData["InprocessCount"] = _db.employee.Where(e => e.Status == "Inprocess").Count();
+            ViewData["InprocessCount"] = _db.employee.Where(e => e.Status == "User Verified").Count();
             ViewData["CompletedCount"] = _db.employee.Where(e => e.Status == "Completed").Count();
 
         }

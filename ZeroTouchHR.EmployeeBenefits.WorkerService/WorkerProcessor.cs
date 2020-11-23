@@ -14,14 +14,12 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
     public class WorkerProcessor : BackgroundService
     {
         private readonly ILogger<WorkerProcessor> _logger;
-        private readonly IAmazonSQS _sqs;
         private readonly IConfiguration _configuration;
         private readonly ISQSService _sQSService;
         private readonly ISESService _sESService;
         public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, ISESService sESService, IConfiguration configuration)
         {
             _logger = logger;
-            //   _sqs = sqs;
             _configuration = configuration;
             _sQSService = sQSService;
             _sESService = sESService;
@@ -35,6 +33,9 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                 {
                     //get messages
                     string queueName = "WelcomePackSQSQueue";
+
+
+
                     var result = await _sQSService.ReceiveMessageAsync(queueName);
 
                     if (result != null && result.Any())
@@ -42,7 +43,7 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
 
                         var messages = result.Select(x => x.Body);
                         var userDetails = messages.ToList();
-                        var emailAddress = userDetails[0];
+                        var emailAddress = "kojof@calabashmedia.com"; 
                         await _sESService.Send(emailAddress);
                     }
 

@@ -35,11 +35,11 @@ namespace ZeroTouchHR.Services
         {
             try
             {
-                string sqlUrl = _configuration.GetSection("AWS").GetSection("UsersForActiveDirectorSQSQueue").Value;
+                string sqsUrl = _configuration.GetSection("AWS").GetSection("UsersForActiveDirectorSQSQueue").Value;
 
           //      string message = JsonConvert.SerializeObject(aDUserCredentials.ToString());
           
-                var sendRequest = new SendMessageRequest(sqlUrl, aDUserCredentials.ToString());
+                var sendRequest = new SendMessageRequest(sqsUrl, aDUserCredentials.ToString());
                 sendRequest.MessageGroupId = "ZeroTouchHR";
                 // Post message or payload to queue  
                 var sendResult = await _sqs.SendMessageAsync(sendRequest);
@@ -57,12 +57,12 @@ namespace ZeroTouchHR.Services
         {
             try
             {
-                string sqlUrl = _configuration.GetSection("AWS").GetSection(queueName).Value;
+                string sqsUrl = _configuration.GetSection("AWS").GetSection(queueName).Value;
 
                 //Create New instance  
                 var request = new ReceiveMessageRequest
                 {
-                    QueueUrl = sqlUrl,
+                    QueueUrl = sqsUrl,
                     MaxNumberOfMessages = 10,
                     WaitTimeSeconds = 5
                 };
@@ -73,7 +73,7 @@ namespace ZeroTouchHR.Services
                 {
                     if(result.Messages.Count > 0)
                     {
-                        await DeleteMessageAfterRead(result.Messages, sqlUrl);
+                        await DeleteMessageAfterRead(result.Messages, sqsUrl);
                     }
                 }
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
@@ -90,7 +90,7 @@ namespace ZeroTouchHR.Services
             return null;
         }
 
-        private async Task DeleteMessageAfterRead(IEnumerable<Message> messages, string sqlUrl)
+        private async Task DeleteMessageAfterRead(IEnumerable<Message> messages, string sqsUrl)
         {
             if (messages != null)
             {
@@ -100,7 +100,7 @@ namespace ZeroTouchHR.Services
 
                     var deleteMessageRequest = new DeleteMessageRequest
                     {
-                        QueueUrl = sqlUrl,
+                        QueueUrl = sqsUrl,
                         ReceiptHandle = messageReceiptHandle
                     };
 

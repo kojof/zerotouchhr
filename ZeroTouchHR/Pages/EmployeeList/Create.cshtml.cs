@@ -82,16 +82,13 @@ namespace ZeroTouchHR.Pages.EmployeeList
 
                 var user = _pool.GetUser(Employee.Email);
                 user.Attributes.Add(CognitoAttribute.Email.AttributeName, Employee.Email);
-
+                user.Attributes.Add(CognitoAttribute.Name.AttributeName, Employee.FName);
                 var result = await _userManager.CreateAsync(user, Employee.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                  //  string message = "dsadd user cn=kishore,ou=users,ou=zerotouchhr,dc=zerotouchhr,dc=com -fn Kishore -ln Poosa -pwd $ervice1@3 -email kishore3886@gmail.com -memberof cn=WorkSpaces,ou=zerotouchhr,dc=zerotouchhr,dc=com";
-                    
-                  
-                  var adUserCredentials = CreateAdUserCredentials();
+                    var adUserCredentials = CreateAdUserCredentials();
 
                     var  messageSent = await _sQSService.SendMessageAsync(adUserCredentials);
                     // await _signInManager.SignInAsync(user, isPersistent: false);
