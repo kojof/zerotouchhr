@@ -49,8 +49,9 @@ namespace ZeroTouchHR.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.InnerException.ToString());
-                throw ex;
+              //  throw ex;
             }
+            return false;
         }
 
         public async Task<IEnumerable<Message>> ReceiveMessageAsync(string queueName)
@@ -58,6 +59,8 @@ namespace ZeroTouchHR.Services
             try
             {
                 string sqsUrl = _configuration.GetSection("AWS").GetSection(queueName).Value;
+
+                _logger.LogInformation("Worker running in SQService ReceiveMessageAsync. Show config value for queue : {time} {sqsUrl}", DateTimeOffset.Now, sqsUrl);
 
                 //Create New instance  
                 var request = new ReceiveMessageRequest
@@ -69,6 +72,9 @@ namespace ZeroTouchHR.Services
                 //CheckIs there any new message available to process  
                 var result = await _sqs.ReceiveMessageAsync(request);
 
+                _logger.LogInformation("Worker running in SQService ReceiveMessageAsync. Show responses from queue : {time} {result}", DateTimeOffset.Now, result);
+
+
                 if (result.HttpStatusCode == HttpStatusCode.OK)
                 {
                     if(result.Messages.Count > 0)
@@ -76,7 +82,7 @@ namespace ZeroTouchHR.Services
                         await DeleteMessageAfterRead(result.Messages, sqsUrl);
                     }
                 }
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                _logger.LogInformation("Worker running in SQService ReceiveMessageAsync : {time}", DateTimeOffset.Now);
 
                 return result.Messages.Any() ? result.Messages : new List<Message>();
             }
@@ -84,7 +90,7 @@ namespace ZeroTouchHR.Services
             {
 
                 _logger.LogError(ex.InnerException.ToString());
-                throw ex;
+               // throw ex;
             }
 
             return null;
@@ -105,6 +111,8 @@ namespace ZeroTouchHR.Services
                     };
 
                     await _sqs.DeleteMessageAsync(deleteMessageRequest);
+                    _logger.LogInformation("Worker running in SQService DeleteMessageAfterRead. Message Deleted after read : {time}", DateTimeOffset.Now);
+
                 }
             }
         }

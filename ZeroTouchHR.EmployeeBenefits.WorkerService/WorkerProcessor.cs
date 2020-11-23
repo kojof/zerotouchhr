@@ -7,6 +7,7 @@ using Amazon.SQS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ZeroTouchHR.Services.Interfaces;
 
 namespace ZeroTouchHR.EmployeeBenefits.WorkerService
@@ -31,31 +32,47 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
             {
                 try
                 {
+                    _logger.LogInformation("Entered WorkerProcessor running at: {time}", DateTimeOffset.Now);
+
                     //get messages
                     string queueName = "WelcomePackSQSQueue";
+                    //string queueName = "HealthBenefitsSQSQueue";
 
+                    var response = await _sQSService.ReceiveMessageAsync(queueName);
 
+                    _logger.LogInformation("WorkerProcessor Get Responses at: {time} {response} ", DateTimeOffset.Now, response);
 
-                    var result = await _sQSService.ReceiveMessageAsync(queueName);
-
-                    if (result != null && result.Any())
+                    if (response != null && response.Any())
                     {
 
-                        var messages = result.Select(x => x.Body);
-                        var userDetails = messages.ToList();
-                        var emailAddress = "kojof@calabashmedia.com"; 
-                        await _sESService.Send(emailAddress);
+                        var snsMessages = response.Select(x => x.Body).ToList();
+
+                        _logger.LogInformation("WorkerProcessor Response received at: {time} {snsMessages}", DateTimeOffset.Now, snsMessages);
+
+                        foreach (var message in snsMessages)
+                        {
+                            var snsMessage = Amazon.SimpleNotificationService.Util.Message.ParseMessage(message);
+
+                            var result = snsMessage.MessageText;
+                            string replacedCharacter = result.Replace("%40", "@");
+                            var separator = "/";
+
+                            int separatorIndex = replacedCharacter.IndexOf(separator);
+                            string emailAddress = replacedCharacter.Substring(0, separatorIndex);
+
+                            _logger.LogInformation("WorkerProcessor Send message containing EmailAddress to SES at: {time} {emailAddress}", DateTimeOffset.Now, emailAddress);
+                            
+                            await _sESService.SendEmailAsync(emailAddress);
+                            
+                            _logger.LogInformation("WorkerProcessor Sent message containing EmailAddress to SES at: {time} {emailAddress}", DateTimeOffset.Now, emailAddress);
+                        }
                     }
 
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e.InnerException.ToString());
-                    Console.WriteLine(e.StackTrace);
-                    Console.WriteLine(e.InnerException);
-                    Console.WriteLine(e);
-                 
-                    //     throw;
+                    _logger.LogError("WorkerProcessor Sent message Exception {exception}", e.InnerException.ToString());
+                    _logger.LogError("WorkerProcessor Sent message Exception {exception}", e.StackTrace.ToString());
                 }
 
                 _logger.LogInformation("WorkerProcessor running at: {time}", DateTimeOffset.Now);
