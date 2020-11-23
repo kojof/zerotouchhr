@@ -62,11 +62,11 @@ namespace ZeroTouchHR.ADUserProcessor
                     }
                 }
 
-                await RunBatchFile(fileDirectory, fileName);
+                 RunBatchFile(fileDirectory, fileName);
             }
         }
 
-        private async Task RunBatchFile(string fileDirectory, string fileName)
+        private void RunBatchFile(string fileDirectory, string fileName)
         {
             Process process = new Process();
             try

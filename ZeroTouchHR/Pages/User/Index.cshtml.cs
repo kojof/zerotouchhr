@@ -54,9 +54,9 @@ namespace ZeroTouchHR.Pages.User
         }
 
 
-        public async Task OnGetAsync(string emailAddress)
+        public void OnGet(string emailAddress)
         {
-            Employee = _db.employee.FirstOrDefault(x => x.Email == emailAddress);
+            Employee =  _db.employee.FirstOrDefault(x => x.Email == emailAddress);
         }
 
         //this is to upload the document as well as push it to s3 bucket

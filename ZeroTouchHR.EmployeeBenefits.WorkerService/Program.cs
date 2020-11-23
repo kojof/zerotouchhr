@@ -8,6 +8,7 @@ using Amazon.SQS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ZeroTouchHR.Services;
 using ZeroTouchHR.Services.Interfaces;
 
@@ -36,12 +37,18 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                     // AWS Configuration
                     var options = hostContext.Configuration.GetAWSOptions();
                     Console.WriteLine(options);
+
+                    services.AddLogging(config =>
+                    {
+                        config.AddAWSProvider(hostContext.Configuration.GetAWSLoggingConfigSection());
+                        config.SetMinimumLevel(LogLevel.Debug);
+                    });
+
                     services.AddDefaultAWSOptions(options);
                     services.AddAWSService<IAmazonSQS>();
                     services.AddAWSService<IAmazonSimpleEmailService>();
                     services.AddTransient<ISQSService, SQSService>();
                     services.AddTransient<ISESService, SESService>();
-                  
 
                     // WorkerProcessor Service
                     services.AddHostedService<WorkerProcessor>();

@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 
 namespace ZeroTouchHR.Services.Interfaces
 {
     public interface ISESService
     {
-        Task Send(string emailAddress);
+        Task<HttpStatusCode> SendEmailAsync(string emailAddress);
     }
 }

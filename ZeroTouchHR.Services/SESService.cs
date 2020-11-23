@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using ZeroTouchHR.Services.Interfaces;
 
 namespace ZeroTouchHR.Services
@@ -14,7 +18,7 @@ namespace ZeroTouchHR.Services
     {
         // Replace sender@example.com with your "From" address.
         // This address must be verified with Amazon SES.
-        static readonly string senderAddress = "kojof@hotmail.com";
+     //   static readonly string senderAddress = "kojof@hotmail.com";
 
         // Replace recipient@example.com with a "To" address. If your account
         // is still in the sandbox, this address must be verified.
@@ -55,23 +59,33 @@ namespace ZeroTouchHR.Services
         </body>
         </html>";
 
-        public SESService()
-        {
+        private readonly ILogger<SESService> _logger;
+        private readonly IAmazonSimpleEmailService _amazonSimpleEmailService;
+        private readonly IConfiguration _configuration;
 
+
+        public SESService(IAmazonSimpleEmailService amazonSimpleEmailService, IConfiguration configuration, ILogger<SESService> logger)
+        {
+            _logger = logger;
+            _amazonSimpleEmailService = amazonSimpleEmailService;
+            _configuration = configuration;
         }
 
-        public async Task Send(string emailAddress)
+        public async Task<HttpStatusCode> SendEmailAsync(string emailAddress)
         {
-           
-            using (var client = new AmazonSimpleEmailServiceClient(RegionEndpoint.USEast1))
+            try
             {
+                string senderEmailAddress = _configuration.GetSection("AWS").GetSection("SESEmailSender").Value;
+                _logger.LogInformation($"Entered SES Service SendEmailAsync Method on {DateTime.UtcNow:O}");
+                _logger.LogInformation($"SES Service SendEmailAsync Method show Sender EmailAddress from Config - {senderEmailAddress}   {DateTime.UtcNow:O}");
+
                 var sendRequest = new SendEmailRequest
                 {
-                    Source = senderAddress,
+                    Source = senderEmailAddress,
                     Destination = new Destination
                     {
                         ToAddresses =
-                        new List<string> { emailAddress }
+                            new List<string> {emailAddress}
                     },
                     Message = new Message
                     {
@@ -82,34 +96,35 @@ namespace ZeroTouchHR.Services
                             {
                                 Charset = "UTF-8",
                                 Data = htmlBody
-                            },
-                            //Text = new Content
-                            //{
-                            //    Charset = "UTF-8",
-                            //    Data = textBody
-                            //}
+                            }
                         }
-                    },
-                    // If you are not using a configuration set, comment
-                    // or remove the following line 
-                    //ConfigurationSetName = configSet
+                    }
                 };
-                try
-                {
-                    Console.WriteLine("Sending email using Amazon SES...");
-                    var response = await client.SendEmailAsync(sendRequest);
-                    Console.WriteLine("The email was sent successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("The email was not sent.");
-                    Console.WriteLine("Error message: " + ex.Message);
 
+
+                var response = await _amazonSimpleEmailService.SendEmailAsync(sendRequest);
+                if (response.HttpStatusCode == HttpStatusCode.OK)
+                {
+                    _logger.LogInformation($"The email with message Id {response.MessageId} sent successfully to {sendRequest.Destination.ToAddresses} on {DateTime.UtcNow:O}");
                 }
+                else
+                {
+                    _logger.LogError(
+                        $"Failed to send email with message Id {response.MessageId} to {sendRequest.Destination.ToAddresses} on {DateTime.UtcNow:O} due to {response.HttpStatusCode}.");
+                }
+
+                return response.HttpStatusCode;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to send email  on {DateTime.UtcNow:O} due to {ex.InnerException}.");
+                _logger.LogError($"Failed to send email  on {DateTime.UtcNow:O} due to {ex.StackTrace}.");
+
             }
 
-            //    Console.Write("Press any key to continue...");
-            //   Console.ReadKey();
+            return HttpStatusCode.BadRequest;
         }
     }
 }
+
