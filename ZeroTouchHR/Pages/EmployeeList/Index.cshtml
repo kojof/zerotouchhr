@@ -20,7 +20,7 @@
 
 
     <div class="col-12 border p-3 mt-3">
-        <form  method="post">
+        <form method="post">
             @if (Model.employees.Count() > 0)
             {
                 <table class="table table-striped border">
@@ -100,6 +100,90 @@
     </div>
 
     <div class="col-9">
+        <h3 class=" text-info"> Verified By User List</h3>
+    </div>
+    <div class="col-12 border p-3 ">
+        <form action="/" method="post">
+            @if (Model.employeesUserVerified.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="employeesUserVerified.FirstOrDefault().FName"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesUserVerified.FirstOrDefault().LName"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesUserVerified.FirstOrDefault().PhoneNumber"></label>
+                        </th>
+                        <th>
+                            <label asp-for="employeesUserVerified.FirstOrDefault().Status"></label>
+                        </th>
+                        @*<th>
+                                <label> Action </label>
+                            </th>*@
+                    </tr>
+
+                    @foreach (var item in Model.employeesUserVerified)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(m => item.FName)
+
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(m => item.LName)
+
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(m => item.PhoneNumber)
+
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(m => item.Status)
+
+                            </td>
+                            @*<td>
+
+                                    <button class="btn btn-outline-danger btn-sm ">
+                                        Delete
+
+                                    </button>
+                                    <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
+
+                                </td>*@
+
+                        </tr>
+
+
+                    }
+
+
+
+                </table>
+
+            }
+            else
+            {
+
+                <p>No employees at this moment. </p>
+            }
+
+
+        </form>
+
+
+    </div>
+
+
+    <div class="col-9">
         <h3 class=" text-info"> Process Completed Employee List</h3>
     </div>
     <div class="col-12 border p-3 ">
@@ -121,8 +205,8 @@
                             <label asp-for="employeesCompleted.FirstOrDefault().Status"></label>
                         </th>
                         @*<th>
-                            <label> Action </label>
-                        </th>*@
+                                <label> Action </label>
+                            </th>*@
                     </tr>
 
                     @foreach (var item in Model.employeesCompleted)
@@ -152,13 +236,13 @@
                             </td>
                             @*<td>
 
-                                <button class="btn btn-outline-danger btn-sm ">
-                                    Delete
+                                    <button class="btn btn-outline-danger btn-sm ">
+                                        Delete
 
-                                </button>
-                                <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
+                                    </button>
+                                    <a asp-page="Edit" asp-route-id="@item.id" class="btn btn-outline-success btn-sm"> Edit</a>
 
-                            </td>*@
+                                </td>*@
 
                         </tr>
 
