@@ -36,7 +36,7 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
 
                     //get messages
                     string queueName = "WelcomePackSQSQueue";
-                    //string queueName = "HealthBenefitsSQSQueue";
+                  //  string queueName = "HealthBenefitsSQSQueue";
 
                     var response = await _sQSService.ReceiveMessageAsync(queueName);
 
