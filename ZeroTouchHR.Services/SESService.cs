@@ -18,7 +18,7 @@ namespace ZeroTouchHR.Services
     {
         // Replace sender@example.com with your "From" address.
         // This address must be verified with Amazon SES.
-     //   static readonly string senderAddress = "kojof@hotmail.com";
+        //   static readonly string senderAddress = "kojof@hotmail.com";
 
         // Replace recipient@example.com with a "To" address. If your account
         // is still in the sandbox, this address must be verified.
@@ -27,15 +27,15 @@ namespace ZeroTouchHR.Services
         // The configuration set to use for this email. If you do not want to use a
         // configuration set, comment out the following property and the
         // ConfigurationSetName = configSet argument below. 
-        static readonly string configSet = "ConfigSet";
+        //static readonly string configSet = "ConfigSet";
 
         // The subject line for the email.
         static readonly string subject = "Welcome to Zero Touch HR";
 
-        // The email body for recipients with non-HTML email clients.
-        static readonly string textBody = "Amazon SES Test (.NET)\r\n"
-                                          + "This email was sent through Amazon SES "
-                                          + "using the AWS SDK for .NET.";
+        //// The email body for recipients with non-HTML email clients.
+        //static readonly string textBody = "Amazon SES Test (.NET)\r\n"
+        //                                  + "This email was sent through Amazon SES "
+        //                                  + "using the AWS SDK for .NET.";
 
         // The HTML body of the email.
         //        static readonly string htmlBody = @"<html>

@@ -9,6 +9,6 @@ namespace ZeroTouchHR.ADUserProcessor
     public interface IQueueProcessor
     {
         Task<IEnumerable<string>> ReceiveMessageAsync(string queueName);
-        Task SaveMessageToBatchFile(IEnumerable<string> messageList);
+        void SaveMessageToBatchFile(IEnumerable<string> messageList);
     }
 }

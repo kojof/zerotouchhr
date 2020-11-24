@@ -30,7 +30,7 @@ namespace ZeroTouchHR.ADUserProcessor
             return messages.Select(x => x.Body);
         }
 
-        public  async Task SaveMessageToBatchFile(IEnumerable<string> messageList)
+        public  void SaveMessageToBatchFile(IEnumerable<string> messageList)
         {
             var configuration = _configuration["BatchFilePath"];
 

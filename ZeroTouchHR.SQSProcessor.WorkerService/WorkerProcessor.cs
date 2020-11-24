@@ -18,14 +18,12 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
     public class WorkerProcessor : BackgroundService
     {
         private readonly ILogger<WorkerProcessor> _logger;
-        private readonly IAmazonSQS _sqs;
         private readonly IConfiguration _configuration;
         private readonly ISQSService _sQSService;
 
         public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, IConfiguration configuration)
         {
             _logger = logger;
-         //   _sqs = sqs;
             _configuration = configuration;
             _sQSService = sQSService;
         }
@@ -44,7 +42,7 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
                     {
 
                         var messages = result.Select(x => x.Body);
-                     await SaveMessageToBatchFile(messages);
+                      SaveMessageToBatchFile(messages);
                     }
 
                 }
@@ -62,7 +60,7 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
             }
         }
 
-        private async Task SaveMessageToBatchFile(IEnumerable<string> messageList)
+        private void SaveMessageToBatchFile(IEnumerable<string> messageList)
         {
             var configuration = _configuration["BatchFilePath"];
 
@@ -95,11 +93,11 @@ namespace ZeroTouchHR.SQSProcessor.WorkerService
                 //    }
                 //}
 
-                await RunBatchFile(fileDirectory, fileName);
+                 RunBatchFile(fileDirectory, fileName);
             }
         }
 
-        private async Task RunBatchFile(string fileDirectory, string fileName)
+        private void RunBatchFile(string fileDirectory, string fileName)
         {
             Process process = new Process();
             try

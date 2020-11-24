@@ -83,6 +83,7 @@ namespace ZeroTouchHR.Pages.EmployeeList
                 var user = _pool.GetUser(Employee.Email);
                 user.Attributes.Add(CognitoAttribute.Email.AttributeName, Employee.Email);
                 user.Attributes.Add(CognitoAttribute.Name.AttributeName, Employee.FName);
+                user.Attributes.Add(CognitoAttribute.GivenName.AttributeName, Employee.Password);
                 var result = await _userManager.CreateAsync(user, Employee.Password);
                 if (result.Succeeded)
                 {

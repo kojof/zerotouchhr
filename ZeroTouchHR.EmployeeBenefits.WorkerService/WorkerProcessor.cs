@@ -1,14 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.SQS;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ZeroTouchHR.EmployeeBenefits.WorkerService.DataModels;
+using ZeroTouchHR.Models;
+using ZeroTouchHR.Services;
 using ZeroTouchHR.Services.Interfaces;
+
 
 namespace ZeroTouchHR.EmployeeBenefits.WorkerService
 {
@@ -18,12 +25,16 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
         private readonly IConfiguration _configuration;
         private readonly ISQSService _sQSService;
         private readonly ISESService _sESService;
-        public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, ISESService sESService, IConfiguration configuration)
+
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+
+        public WorkerProcessor(ILogger<WorkerProcessor> logger, ISQSService sQSService, ISESService sESService,  IConfiguration configuration, IServiceScopeFactory serviceScopeFactory)
         {
             _logger = logger;
             _configuration = configuration;
             _sQSService = sQSService;
             _sESService = sESService;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +45,6 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
                 {
                     _logger.LogInformation("Entered WorkerProcessor running at: {time}", DateTimeOffset.Now);
 
-                    //get messages
                     string queueName = "WelcomePackSQSQueue";
                   //  string queueName = "HealthBenefitsSQSQueue";
 
@@ -62,7 +72,23 @@ namespace ZeroTouchHR.EmployeeBenefits.WorkerService
 
                             _logger.LogInformation("WorkerProcessor Send message containing EmailAddress to SES at: {time} {emailAddress}", DateTimeOffset.Now, emailAddress);
                             
-                            await _sESService.SendEmailAsync(emailAddress);
+                            var emailResponse = await _sESService.SendEmailAsync(emailAddress);
+
+                            if (emailResponse == HttpStatusCode.OK)
+                            {
+                                using var scope = _serviceScopeFactory.CreateScope();
+
+                                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                                _logger.LogInformation("WorkerProcessor start to update database at: {time}", DateTimeOffset.Now);
+
+                                //Update Database
+                                var employee = await dbContext.employee.Where(x => x.Email == emailAddress).FirstOrDefaultAsync();
+                                employee.Status = "Completed";
+                                await dbContext.SaveChangesAsync();
+
+                                _logger.LogInformation("WorkerProcessor updated database at: {time}", DateTimeOffset.Now);
+                            }
                             
                             _logger.LogInformation("WorkerProcessor Sent message containing EmailAddress to SES at: {time} {emailAddress}", DateTimeOffset.Now, emailAddress);
                         }
